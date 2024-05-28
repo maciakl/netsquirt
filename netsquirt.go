@@ -15,9 +15,9 @@ func main() {
 
     // command line args
     var file string
-    flag.StringVar(&file, "file", "", "path to file to send")
+    flag.StringVar(&file, "file", "", "path to file to send (can be relative or absolute)")
     var ver bool
-    flag.BoolVar(&ver, "version", false, "display version number")
+    flag.BoolVar(&ver, "version", false, "display version number and exit")
     flag.Parse()
 
     if ver {
@@ -84,9 +84,9 @@ func getIP() string {
         panic(err)
     }
 
-    // iterate through the interfaces and return the first non-loopback address
+    // iterate through the interfaces and return the first private address
     for _, address := range addrs {
-        if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+        if ipnet, ok := address.(*net.IPNet); ok && ipnet.IP.IsPrivate(){
             if ipnet.IP.To4() != nil {
                 return ipnet.IP.String()
             }
