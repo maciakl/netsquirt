@@ -7,6 +7,7 @@ Written in Go.
     Usage:
 
         -file, --file [PATH]        specify path to the file to be served
+        -port, --port [NUMBER]      specify a port number to run the server on
         -version, --version         display verison
         -h, -help, --help           display Usage
 
