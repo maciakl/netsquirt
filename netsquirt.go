@@ -9,15 +9,20 @@ import (
     "path/filepath"
 )
 
-const version = "0.1.1"
+const version = "0.1.2"
 
 func main() {
 
     // command line args
     var file string
     flag.StringVar(&file, "file", "", "path to file to send (can be relative or absolute)")
+
+    var port int
+    flag.IntVar(&port, "port", 80, "port to run the server on")
+
     var ver bool
     flag.BoolVar(&ver, "version", false, "display version number and exit")
+
     flag.Parse()
 
     if ver {
@@ -25,8 +30,14 @@ func main() {
         os.Exit(0)
     }
 
+    portnum := "" // port number string
+
+    if port != 80 {
+        portnum = fmt.Sprintf(":%d", port)
+    }
+
     ip := getIP()
-    fmt.Println("\nServer running on: http://"+ ip)
+    fmt.Println("\nServer running on: http://"+ ip + portnum)
     fmt.Println("Press Ctrl+C to stop the server")
 
     filename := filepath.Base(file)
@@ -36,9 +47,9 @@ func main() {
     
         fmt.Println("\nServing file: ", filename, "on port 80")
         fmt.Println("\nTo get the file:")
-        fmt.Println("\t - Paste this address into your browser: http://"+ ip)
-        fmt.Println("\t - Use the following command: wget http://"+ ip)
-        fmt.Println("\t - Or on Windows (Powershell): wget http://"+ ip, "-O", filename)
+        fmt.Println("\t - Paste this address into your browser: http://"+ ip + portnum)
+        fmt.Println("\t - Use the following command: wget http://"+ ip + portnum)
+        fmt.Println("\t - Or on Windows (Powershell): wget http://"+ ip + portnum, "-O", filename)
 
     } else {
         if file != "" {
@@ -60,12 +71,12 @@ func main() {
         } else {
             // this happens when the file is not set
             fmt.Fprint(w, "netsquirt version ", version, "\n")
-            fmt.Fprint(w, "ip address: ", ip, "\n")
+            fmt.Fprint(w, "server running on: http://"+ ip + portnum, "\n")
         }
     })
 
 
-    if err := http.ListenAndServe(":80", nil); err != nil {
+    if err := http.ListenAndServe(portnum, nil); err != nil {
         fmt.Fprintln(os.Stderr, "Server error:", err)
     }
 }
