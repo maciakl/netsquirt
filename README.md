@@ -15,9 +15,13 @@ If you run the program without the `-file` parameter, it will serve a simple htm
 
 ## Installing
 
- On Windows, this tool is distributed via `scoop` (see [scoop.sh](https://scoop.sh)).
+Install via go:
+ 
+    go install github.com/maciakl/netsquirt@latest
 
- First, you need to add my bucket:
+On Windows, this tool is distributed via `scoop` (see [scoop.sh](https://scoop.sh)).
+
+First, you need to add my bucket:
 
     scoop bucket add maciak https://github.com/maciakl/bucket
     scoop update
